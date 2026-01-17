@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Array Playground</title>
+</head>
+
+<body>
+    <h1>Simple Array Playground</h1>
+
+    <div>
+        <input type="number" id="arrayInput" placeholder="Enter a number">
+        <button onclick="addToArray()">Add to Array</button>
+        <button onclick="randomizeArray()">Randomize</button>
+        <button onclick="clearArray()">Clear</button>
+    </div>
+    <div style="margin-top: 20px;">
+        <strong>Current Array:</strong>
+        <span id="arrayDisplay">[]</span>
+    </div>
+    <div style="margin-top: 20px;">
+        <button onclick="sortAsc()">Sort Ascending</button>
+        <button onclick="sortDesc()">Sort Descending</button>
+        <button onclick="doubleValues()">Double Values</button>
+        <button onclick="filterEven()">Filter Evens</button>
+    </div>
+    <div style="margin-top: 20px;">
+        <h3>Operation History</h3>
+        <ul id="historyList"></ul>
+    </div>
+    <script>
+        let currentArray = [1, 5, 2, 8, 3];
+        function updateDisplay() {
+            document.getElementById('arrayDisplay').innerText = JSON.stringify(currentArray);
+        }
+        function addHistory(operation, original, result) {
+            const historyList = document.getElementById('historyList');
+            const li = document.createElement('li');
+            li.innerText = `${operation}: ${JSON.stringify(original)} -> ${JSON.stringify(result)}`;
+            historyList.prepend(li);
+        }
+        function addToArray() {
+            const input = document.getElementById('arrayInput');
+            const val = parseInt(input.value);
+            if (!isNaN(val)) {
+                currentArray.push(val);
+                input.value = '';
+                updateDisplay();
+            }
+        }
+        function randomizeArray() {
+            currentArray = Array.from({ length: 5 }, () => Math.floor(Math.random() * 100));
+            updateDisplay();
+        }
+        function clearArray() {
+            currentArray = [];
+            updateDisplay();
+        }
+        function sortAsc() {
+            const original = [...currentArray];
+            currentArray.sort((a, b) => a - b);
+            addHistory("Sort Ascending", original, [...currentArray]);
+            updateDisplay();
+        }
+        function sortDesc() {
+            const original = [...currentArray];
+            currentArray.sort((a, b) => b - a);
+            addHistory("Sort Descending", original, [...currentArray]);
+            updateDisplay();
+        }
+        function doubleValues() {
+            const original = [...currentArray];
+            currentArray = currentArray.map(x => x * 2);
+            addHistory("Double Values", original, [...currentArray]);
+            updateDisplay();
+        }
+        function filterEven() {
+            const original = [...currentArray];
+            currentArray = currentArray.filter(x => x % 2 === 0);
+            addHistory("Filter Evens", original, [...currentArray]);
+            updateDisplay();
+        }
+        // Initial display
+        updateDisplay();
+    </script>
+</body>
+
+</html>
